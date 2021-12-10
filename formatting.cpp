@@ -12,11 +12,19 @@ vector <string> xml_vector(string xml) {
 	string line;
 	vector <string> temp;
 	int i = 0;
-
-
+  
 	for (; getline(file, line); i++) {
 		bool whiteSpacesOnly = std::all_of(line.begin(), line.end(), isspace);
-		line.erase(std::remove(line.begin(), line.end(), '\t'), line.end());
+		int a= 0;
+		string line2 = "";
+		while (line[a] == ' ')
+		{
+			a++;
+		}
+		for (int k = a; k < line.size(); k++) {
+			line2 = line2 + line[k];
+		}
+		line = line2;
 		if (whiteSpacesOnly)temp.push_back(line + " ");
 		else temp.push_back(line);
 	}
@@ -33,7 +41,7 @@ string formatting(string xml) {
 		line = x[i];
 		if (line[0] == '<') {
 			if (line.find_first_of('<') != line.find_last_of('<')) {
-				for (int j = 1; j < space_count; j++) {
+				for (int j = 0; j < space_count; j++) {
 					formatted.append("\t");
 				}
 				formatted.append(line);
@@ -41,7 +49,7 @@ string formatting(string xml) {
 			}
 			else if (line[1] == '/') {
 				space_count--;
-				for (int j = 1; j < space_count; j++) {
+				for (int j = 0; j < space_count; j++) {
 					formatted.append("\t");
 				}
 				formatted.append(line);
@@ -49,7 +57,7 @@ string formatting(string xml) {
 
 			}
 			else {
-				for (int j = 1; j < space_count; j++) {
+				for (int j = 0; j < space_count; j++) {
 					formatted.append("\t");
 				}
 				formatted.append(line);
@@ -58,7 +66,7 @@ string formatting(string xml) {
 			}
 		}
 		else {
-			for (int j = 1; j < space_count; j++) {
+			for (int j = 0; j < space_count; j++) {
 				formatted.append("\t");
 			}
 			formatted.append(line);
@@ -69,7 +77,9 @@ string formatting(string xml) {
 }
 int main()
 {
-	string s,c;
+	string s, c;
 	s = formatting("sample.xml");
 	cout << s;
-}	
+}
+
+
