@@ -84,7 +84,7 @@ int main()
 	string s, c;
 	s = formatting("sample.xml");
 	ofstream myfile;
-	myfile.open("formatted.txt");         // Creating a txt file that contain the formatted file.
+	myfile.open("formatted.xml");         // Creating a correctly formatted xml file .
 	myfile << s ;
 	myfile.close();
 	return 0;
