@@ -6,16 +6,18 @@
 #include <algorithm>
 using namespace std;
 
+// Getting the xml file , removing all indentations.
+// Creating a vector called "temp" where every element of temp is a line of the xml file.
 vector <string> xml_vector(string xml) {
 	stack <string> s;
 	ifstream file(xml);
 	string line;
 	vector <string> temp;
 	int i = 0;
-  
+
 	for (; getline(file, line); i++) {
 		bool whiteSpacesOnly = std::all_of(line.begin(), line.end(), isspace);
-		int a= 0;
+		int a = 0;
 		string line2 = "";
 		while (line[a] == ' ')
 		{
@@ -30,6 +32,8 @@ vector <string> xml_vector(string xml) {
 	}
 	return temp;
 }
+// Adding right indentation
+
 string formatting(string xml) {
 
 	vector <string> x;
@@ -79,7 +83,10 @@ int main()
 {
 	string s, c;
 	s = formatting("sample.xml");
-	cout << s;
+	ofstream myfile;
+	myfile.open("formatted.txt");         // Creating a txt file that contain the formatted file.
+	myfile << s ;
+	myfile.close();
+	return 0;
+	
 }
-
-
