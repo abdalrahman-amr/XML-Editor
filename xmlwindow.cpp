@@ -194,4 +194,132 @@ void xmlwindow::on_pushButton_3_clicked()
 
     newDoc.close();
 }
+void xmlwindow::on_pushButton_2_clicked()
+{
 
+    QTextEdit edit;
+    edit.setText(ui->textEdit->toPlainText());
+    QTextDocument *doc = edit.document();
+    int i = 0;
+     vector<int> spaces;
+     vector<string> temp;
+     vector<string> original;
+     QTextBlock tb;
+     string line;
+    for (;tb!=doc->end() ; i++) {
+    tb = doc->findBlockByLineNumber(i);
+    line = tb.text().toStdString();
+    spaces.push_back(line.find_first_of('<'));
+    original.push_back(line);
+
+    line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
+    temp.push_back(line);
+}
+    vector<int> total_errors = detect_error(temp, spaces);
+
+    for(int i = 0;i<total_errors.size();i++){
+
+        int num = total_errors[i] ;
+        // if two tags in the same line then the problem is mismatching
+        if(original[num].find_first_of('<') != original[num].find_last_of('<')){
+
+           string s1 = original[num].substr(original[num].find_first_of('<'), original[num].find_first_of('>')-original[num].find_first_of('<')+1);
+           string s2 = original[num].substr(temp[i].find_last_of('<'), original[num].find_last_of('>')-original[num].find_first_of('<')+1);
+           string s  = original[num].replace(original[num].find_last_of('<'),s2.length(),s1.insert(1, "/"));
+            original[num] = s;
+        }
+        // if only one tag
+        else if (original[num].find_first_of('<') == original[num].find_last_of('<')) {
+            string s1 = original[num].substr(original[num].find_first_of('<'), original[num].find_first_of('>')-original[num].find_first_of('<')+1);
+            string s = original[num];
+            s.erase(std::remove(s.begin(), s.end(), ' '), s.end());
+
+           // if open
+            if (s1[1]!='/'){
+               // if open without close in the same line
+                if((s.find_first_of('>') != s.size() - 1) || ((s.find_first_of('<') != 0))){
+                    original[num].append( s1.insert(1,"/")) ;
+                }
+
+                // if open only without close not in the same line
+                else if(!((s.find_first_of('>') != s.size() - 1) || ((s.find_first_of('<') != 0)))){
+                    int k = num+1;
+                    for(;i<original.size();k++){
+                        if ((spaces[k]<=spaces[num])&&(spaces[k]!=-1)){
+
+                            auto itPos1 = original.begin()+k;
+                            auto itPos2 = spaces.begin()+k;
+                            string w="";
+                            original.insert(itPos1,w.append(spaces[num],' ')+ s1.insert(1,"/"));
+                            spaces.insert(itPos2,spaces[num]);
+                            for(int i = 0;i<total_errors[i];i++){
+                                if(total_errors[i]>=k)total_errors[i]+=1;
+                            }
+                            break;
+                        }
+
+                        else if(k == original.size()-1){
+                            auto itPos1 = original.begin()+k+1;
+                            auto itPos2 = spaces.begin()+k+1;
+                            string w="";
+                            original.insert(itPos1,w.append(spaces[num],' ')+ s1.insert(1,"/"));
+                            spaces.insert(itPos2,spaces[num]);
+                            break;
+                        }
+
+                    }
+                }
+
+            }
+            // if close
+            else if(s1[1]=='/'){
+                // if close without open in the same line
+                if((s.find_first_of('>') != s.size() - 1) || ((s.find_first_of('<') != 0))){
+                    original[num] = original[num].insert(original[num].find_first_not_of(" "),s1.erase(1,1));
+                }
+
+                // if close only without open not in the same line
+                else if(!((s.find_first_of('>') != s.size() - 1) || ((s.find_first_of('<') != 0)))){
+                    int k=num-1;
+                    for(;k>=0;k--){
+                        if ((spaces[k]<=spaces[num])&&(spaces[k]!=-1)){
+
+                            auto itPos1 = original.begin()+k+1;
+                            auto itPos2 = spaces.begin()+k+1;
+                            string w="";
+                            original.insert(itPos1,w.append(spaces[num],' ') + s1.erase(1,1));
+                            spaces.insert(itPos2,spaces[num]);
+                            for(int i = 0;i<total_errors[i];i++){
+                                if(total_errors[i]>=k+1)total_errors[i]+=1;
+                            }
+                            break;
+                        }
+
+                        else if(k == 0){
+                            auto itPos1 = original.begin()+k;
+                            auto itPos2 = spaces.begin()+k;
+                            string w="";
+                            original.insert(itPos1,w.append(spaces[num],' ') + s1.erase(1,1));
+                            spaces.insert(itPos2,spaces[num]);
+                            for(int i = 0;i<total_errors[i];i++)total_errors[i]+=1;
+                            break;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+    }
+ui->textEdit_2->clear();
+string app;
+for(int i = 0;i< original.size();i++){
+//ui->textEdit_2->append(QString::fromStdString(original[i]));//append(QString::fromStdString(original[i]));
+if (original[i].find_first_not_of(' ')!= string::npos){
+app.append(original[i]+"\n");
+}
+}
+ui->textEdit_2->setPlainText(QString::fromStdString(app));
+}
