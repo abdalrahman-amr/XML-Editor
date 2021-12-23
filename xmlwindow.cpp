@@ -177,3 +177,21 @@ void xmlwindow::on_pushButton_clicked()
  }
 
 }
+
+void xmlwindow::on_pushButton_3_clicked()
+{
+    QString edit;
+    edit = ui->textEdit_2->toPlainText();
+
+    QString fileName = QFileDialog::getSaveFileName(this,
+             tr("Output"), "",
+             tr("XML (*.xml);;TXT(*.txt);;All Files ()"));
+    QFile newDoc(fileName);
+    if(newDoc.open(QIODevice::WriteOnly)){
+        QTextStream out(&newDoc);
+        out << edit;
+    }
+
+    newDoc.close();
+}
+
