@@ -1,2 +1,0 @@
-
-print("DREAM TEAM")
