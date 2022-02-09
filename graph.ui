@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>graph</class>
+ <widget class="QDialog" name="graph">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1177</width>
+    <height>624</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#graph{
+background:#009;
+
+	background-image: url(:/image/programming-code-coding-hacker-background-programming-code-icon-made-with-binary-code_127544-815.jpg);
+}
+#pushButton
+{
+background:rgb(255,255,255);
+color:rgb(0, 0, 0);
+border-radius:10px;
+}
+#pushButton_2
+{
+background:rgb(255,255,255);
+color:rgb(0, 0, 0);
+border-radius:10px;
+}
+#pushButton_3
+{
+background:rgb(255,255,255);
+color:rgb(0, 0, 0);
+border-radius:10px;
+}
+#pushButton_4
+{
+background:rgb(255,255,255);
+color:rgb(0, 0, 0);
+border-radius:10px;
+}
+#pushButton_5
+{
+background:rgb(255,255,255);
+color:rgb(0, 0, 0);
+border-radius:10px;
+}
+
+#label{
+font-size:18px;
+font-weight:Bold;
+background:transparent;
+color:rgb(255, 255, 255);
+
+}
+#label_2{
+font-size:18px;
+font-weight:Bold;
+background:transparent;
+color:rgb(255, 255, 255);
+}
+#textEdit{
+background:rgb(255, 255, 255);
+}
+</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QTextEdit" name="textEdit"/>
+   </item>
+   <item row="0" column="1">
+    <widget class="QCustomPlot" name="customPlot" native="true"/>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Plot</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
