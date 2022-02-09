@@ -6,6 +6,7 @@
 #include<QTextStream>
 #include "xmlwindow.h"
 #include"window_2.h"
+#include"graph.h"
 
 readonly::readonly(QWidget *parent)
     : QMainWindow(parent)
@@ -56,6 +57,26 @@ void readonly::on_pushButton_2_clicked()
         QString text = in.readAll();
         file.close();
         window_2 x(text,file_name) ;
+        x.setModal(true);
+        x.exec();
+}
+
+
+void readonly::on_pushButton_11_clicked()
+{
+    QString file_name = QFileDialog::getOpenFileName(this,"open xml file","c://");
+    //QMessageBox::information(this,"...",file_name);
+    QFile file(file_name);
+
+       if(!file.open(QFile::ReadOnly|QFile::Text)){
+
+       QMessageBox::information(this,"...",file_name);
+       }
+
+        QTextStream in(&file);
+        QString text = in.readAll();
+        file.close();
+        graph x(text) ;
         x.setModal(true);
         x.exec();
 }
